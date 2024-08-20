@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('nav ul');
+  
+    if (hamburger && navMenu) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('is-active');
+        navMenu.classList.toggle('is-active');
+      });
+  
+      // Close menu when a link is clicked
+      document.querySelectorAll('nav ul li a').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('is-active');
+          navMenu.classList.remove('is-active');
+        });
+      });
+    }
+
     // Check if GSAP and ScrollTrigger are available
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
@@ -68,55 +86,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Lazy loading for project images
-    const lazyLoadImages = () => {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.remove('lazy');
-                    observer.unobserve(img);
-                }
-            });
-        });
-
-        const imgs = document.querySelectorAll('img.lazy');
-        imgs.forEach(img => imageObserver.observe(img));
-    };
-
-    lazyLoadImages();
-
-    // Dark/light mode toggle
-    const toggleTheme = () => {
-        const body = document.body;
-        body.classList.toggle('light-mode');
-        const isDarkMode = !body.classList.contains('light-mode');
-        localStorage.setItem('darkMode', isDarkMode);
-    };
-
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', toggleTheme);
-    }
-
-    // Check for saved theme preference
-    const savedTheme = localStorage.getItem('darkMode');
-    if (savedTheme === 'false') {
-        document.body.classList.add('light-mode');
-    }
-
-    // Smooth scrolling for all internal links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('nav a').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
                 });
             }
         });
@@ -144,6 +124,58 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    // Contact form submission
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Replace with your actual Discord webhook URL
+            const webhookUrl = 'YOUR WEB HOOK';
+
+            const embedData = {
+                embeds: [{
+                    title: 'New Contact Form Submission',
+                    color: 0xff90a4,
+                    fields: [
+                        { name: 'Name', value: name },
+                        { name: 'Email', value: email },
+                        { name: 'Message', value: message }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                if (!webhookUrl) {
+                    throw new Error('No webhook URL configured');
+                }
+
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(embedData),
+                });
+
+                if (response.ok) {
+                    showNotification('success', 'Message has been sent. I\'ll be in touch');
+                    contactForm.reset();
+                } else {
+                    throw new Error('Failed to send message');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('error', `Message failed. ${error.message}`);
+            }
+        });
+    }
 
     // Function to show custom notifications
     function showNotification(type, message) {
