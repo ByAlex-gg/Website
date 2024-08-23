@@ -102,28 +102,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Project filtering
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const projectCards = document.querySelectorAll('.project-card');
-  
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const category = button.dataset.category;
-            
-            // Update active tab
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
-            // Filter projects
-            projectCards.forEach(card => {
-                if (category === 'all' || card.dataset.category === category) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+// Project filtering
+const tabButtons = document.querySelectorAll('.tab-button');
+const projectCards = document.querySelectorAll('.project-card');
+
+tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const category = button.dataset.category;
+        
+        // Update active tab
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Filter projects
+        projectCards.forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
         });
     });
+});
 
     // Contact form submission
     const contactForm = document.getElementById('contact-form');
