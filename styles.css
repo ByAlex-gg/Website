@@ -2,9 +2,9 @@
 :root {
     --bg-color: #0f0f0f;
     --text-color: #f0f0f0;
-    --highlight-color: #ff90a4;
+    --highlight-color: #5563ea;
     --secondary-bg: #1a1a1a;
-    --accent-color: #ff4d4d;
+    --accent-color: #8792f0;
 }
 * {
     margin: 0;
@@ -185,7 +185,7 @@ nav ul li a:hover {
     margin-bottom: 2rem;
 }
 .cta-button:hover {
-    background-color: #975460;
+    background-color: var(--accent-color);
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(151, 84, 96, 0.2);
 }
@@ -238,6 +238,48 @@ nav ul li a:hover {
     line-height: 1.8;
     font-size: 1.1rem;
 }
+
+/* About Section Image Styles */
+.about-image {
+    flex: 0 0 300px; /* Don't grow, don't shrink, fixed width of 300px */
+    position: relative;
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    background: transparent;
+    mix-blend-mode: multiply;
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Adjust responsive design for about section */
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .about-image {
+        flex: 0 0 250px;
+        margin-top: 2rem;
+    }
+}
+
 /* Projects Section */
 #projects {
     padding: 8rem 10%;
@@ -310,7 +352,7 @@ nav ul li a:hover {
 }
 .tag {
     display: inline-block;
-    background-color: rgba(255, 144, 164, 0.1);
+    background-color: rgba(144, 170, 255, 0.1);
     color: var(--highlight-color);
     padding: 0.1rem 0.3rem;
     border-radius: 3px;
@@ -391,45 +433,200 @@ nav ul li a:hover {
     line-height: 1.6;
     flex-grow: 1;
 }
+
 /* Contact Section */
 #contact {
     padding: 8rem 10%;
 }
-#contact-form {
+
+.contact-container {
     display: flex;
-    flex-direction: column;
-    max-width: 600px;
+    gap: 4rem;
+    max-width: 1200px;
     margin: 0 auto;
 }
-#contact-form input, #contact-form textarea {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border: none;
-    border-radius: 5px;
+
+.contact-info {
+    flex: 1;
+}
+
+.contact-info h3 {
+    font-size: 2rem;
+    color: var(--highlight-color);
+    margin-bottom: 1.5rem;
+}
+
+.contact-info h4 {
+    font-size: 1.3rem;
+    color: var(--highlight-color);
+    margin: 2rem 0 1rem 0;
+}
+
+.contact-info p {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    opacity: 0.9;
+}
+
+.contact-info ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 2rem;
+}
+
+.contact-info li {
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.contact-info li:before {
+    content: "•";
+    color: var(--highlight-color);
+    position: absolute;
+    left: 0;
+}
+
+.contact-form-container {
+    flex: 1;
+}
+
+/* Contact Form Styling */
+#contact-form {
+    width: 100%;
+}
+
+#contact-form input,
+#contact-form textarea {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
     background-color: var(--secondary-bg);
     color: var(--text-color);
     font-size: 1rem;
+    transition: all 0.3s ease;
 }
+
+#contact-form input:focus,
+#contact-form textarea:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 0 2px rgba(85, 99, 234, 0.1);
+}
+
+#contact-form input::placeholder,
+#contact-form textarea::placeholder {
+    color: rgba(240, 240, 240, 0.6);
+}
+
 #contact-form textarea {
     min-height: 150px;
     resize: vertical;
+    font-family: 'Poppins', sans-serif;
 }
+
 #contact-form button {
-    background-color: var(--highlight-color);
-    color: var(--bg-color);
+    width: 100%;
+    padding: 1.2rem;
     border: none;
-    padding: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    border-radius: 8px;
+    background-color: var(--highlight-color);
+    color: #fff;
     font-size: 1rem;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
+
 #contact-form button:hover {
-    background-color: #e600c0;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(195, 0, 255, 0.2);
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(85, 99, 234, 0.2);
 }
+
+#contact-form button:active {
+    transform: translateY(0);
+}
+
+/* Error state styling */
+#contact-form input:invalid:focus,
+#contact-form textarea:invalid:focus {
+    border-color: #f91536;
+    box-shadow: 0 0 0 2px rgba(249, 21, 54, 0.1);
+}
+
+/* Success state styling - add this class via JavaScript when form submits successfully */
+.form-success {
+    padding: 1rem;
+    background-color: rgba(29, 208, 93, 0.1);
+    border: 1px solid #1dd05d;
+    border-radius: 8px;
+    color: #1dd05d;
+    text-align: center;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+    #contact-form input,
+    #contact-form textarea,
+    #contact-form button {
+        padding: 1rem;
+    }
+
+    #contact-form textarea {
+        min-height: 120px;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 968px) {
+    .contact-container {
+        flex-direction: column;
+        gap: 3rem;
+    }
+    
+    .contact-info, 
+    .contact-form-container {
+        width: 100%;
+    }
+    
+    .contact-info h3 {
+        font-size: 1.8rem;
+    }
+
+    .contact-info p,
+    .contact-info li {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #contact {
+        padding: 4rem 5%;
+    }
+
+    .contact-container {
+        gap: 2rem;
+    }
+
+    .contact-info h3 {
+        font-size: 1.6rem;
+    }
+
+    .contact-info h4 {
+        font-size: 1.2rem;
+    }
+}
+
 /* Footer */
 footer {
     background-color: var(--secondary-bg);
@@ -570,4 +767,29 @@ footer p {
     .hamburger {
         display: none;
    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--highlight-color);
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--highlight-color) var(--bg-color);
 }
